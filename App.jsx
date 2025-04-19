@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import NavBar from "./src/Components/NavBar";
-import ProductList from "./src/Components/ProductList";
+import { Outlet } from "react-router";
 
 function App(){
 
@@ -13,7 +13,7 @@ useEffect(() => {
 return(
     <>
      <NavBar/>
-     <ProductList products={products}/>
+     <Outlet context={{products}}/>
     </>
 )
 }
