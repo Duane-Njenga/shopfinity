@@ -2,7 +2,7 @@ import App from "./App";
 import Home from "./src/Pages/Home";
 import LogIn from "./src/Pages/LogIn";
 import ProductPage from "./src/Pages/ProductPage";
-import Wishlist from "./src/Pages/Wishlist";
+import WishlistPage from "./src/Pages/WishlistPage";
 import Cart from "./src/Pages/Cart";
 import ErrorPage from "./src/Pages/ErrorPage";
 
@@ -30,7 +30,7 @@ const routes = [
             },
             {
                 path: "/wishlist",
-                element:<Wishlist />
+                element:<WishlistPage />
             }
         ]
     }
