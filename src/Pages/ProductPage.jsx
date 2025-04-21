@@ -4,9 +4,11 @@ import { useOutletContext, useParams } from "react-router";
 function ProductPage(){
  const params = useParams();
  const id = params.id - 1;
- const {products, wishlist, toggleWishlist} = useOutletContext();
+ const {products, wishlist, toggleWishlist, cartItems} = useOutletContext();
  const [product, setProduct] = useState(null)
  const isInWishlist = wishlist.some((item) => item.id === params.id);
+ const isInCart = cartItems.some((item) => item.id === params.id);
+
 
 
  
