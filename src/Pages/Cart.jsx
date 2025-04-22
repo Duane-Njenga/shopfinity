@@ -5,13 +5,16 @@ function Cart(){
     
 return(
     <>
-        <header
+     <header
         className={`text-2xl underline font-bold ${dark ? "text-darkText": "text-black"}`}
-        >Your Cart</header>
+        >Your Cart
+        </header>
+    <div className="flex flex-wrap gap-4">
         {cartItems.map((item) => (
           <ProductCard key ={item.id} product={item}/>  
         ))}
 
+    </div>
     </>
 )
 }

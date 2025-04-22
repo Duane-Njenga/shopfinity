@@ -7,13 +7,15 @@ function App(){
 const [products, setProducts]= useState([]);
 const [wishlist, setWishlist] = useState([]);
 const [cartItems, setCartItems] = useState([]);
-const [dark, setDark] = useState(false)
+const [dark, setDark] = useState(false);
+
 
 useEffect(() => {
-    fetch("http://localhost:3000/products")
+    fetch("https://fakestoreapi.com/products")
     .then(res => res.json())
     .then(data => setProducts(data))
 },[]);
+
 
 const toggleWishlist = (product) => {
 
@@ -29,7 +31,7 @@ const toggleWishlist = (product) => {
 
 };
 
-const toggleCart =(product) => {
+const toggleCart =(product, quantity) => {
     setCartItems((prevCart) => {
         const exists = prevCart.some((item) => item.id === product.id)
         return exists ?
@@ -37,7 +39,6 @@ const toggleCart =(product) => {
         :
         [...prevCart, product]
     })
-    console.log(cartItems);
     
 }
 function toggleDarkmode(){
@@ -56,7 +57,7 @@ return(
      <Outlet context={{
         products, wishlist, toggleWishlist, 
         cartItems, toggleCart,
-        toggleDarkmode, dark
+        toggleDarkmode, dark 
         }}/>
     </>
 )
