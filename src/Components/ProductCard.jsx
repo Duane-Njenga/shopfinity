@@ -3,12 +3,22 @@ import { Link, useOutletContext } from "react-router";
 
 function ProductCard({ product }) {
   const { id, category, image, price, title } = product;
-  const {wishlist, toggleWishlist, dark, toggleCart, cartItems} = useOutletContext();
+  const {wishlist, toggleWishlist, dark, toggleCart, cartItems, updateCartQuantity} = useOutletContext();
   const isInWishlist = wishlist.some((item) => item.id === id)
   const isInCart = cartItems.some((item) => item.id === id)
-  const [quantity, setQuantity] = useState(1);
     
-
+  const cartItem = cartItems.find(item => item.id === id);
+  const quantity = cartItem ? cartItem.quantity : 1;
+  
+  const handleIncrement = () => {
+    updateCartQuantity(product, quantity + 1);
+  };
+  
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      updateCartQuantity(product, quantity - 1);
+    }
+  }
 
   
   return (
@@ -27,16 +37,16 @@ function ProductCard({ product }) {
         {isInCart && (
     <div className="flex items-center mb-2">
       <button 
-        onClick={() => setQuantity(quantity - 1)}
+        onClick={handleDecrement}
         className="bg-gray-300 text-gray-700 px-3 py-1 rounded-l-md hover:bg-gray-400 transition"
       >
         -
       </button>
       <span className="bg-gray-100 px-4 py-1">
-        {quantity > 0 ? quantity: setQuantity(1)}
+        {quantity}
       </span>
       <button 
-        onClick={() => setQuantity(quantity + 1)}
+        onClick={handleIncrement}
         className="bg-gray-300 text-gray-700 px-3 py-1 rounded-r-md hover:bg-gray-400 transition"
       >
         +
@@ -45,7 +55,6 @@ function ProductCard({ product }) {
   )}
         <button 
           onClick={() => {toggleCart(product);
-            setQuantity(1);
           }}
           className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700 transition">
             {isInCart ? "Remove from cart":"Add to Cart"}
@@ -63,12 +72,13 @@ function ProductCard({ product }) {
         
 
         
-        
+        {}
 
         
       </div>
     </div>
   );
+  
 }
 
 export default ProductCard;

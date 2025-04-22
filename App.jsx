@@ -11,7 +11,7 @@ const [dark, setDark] = useState(false);
 
 
 useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
+    fetch("http://localhost:3000/products")
     .then(res => res.json())
     .then(data => setProducts(data))
 },[]);
@@ -31,13 +31,13 @@ const toggleWishlist = (product) => {
 
 };
 
-const toggleCart =(product, quantity) => {
+const toggleCart =(product) => {
     setCartItems((prevCart) => {
         const exists = prevCart.some((item) => item.id === product.id)
         return exists ?
         prevCart.filter((item) => item.id !== product.id)
         :
-        [...prevCart, product]
+        [...prevCart, {...product, quantity : 1}]
     })
     
 }
@@ -51,13 +51,22 @@ function toggleDarkmode(){
     }
         
 }
+const updateCartQuantity = (product, newQuantity) => {
+    setCartItems(prevItems => 
+      prevItems.map(item => 
+        item.id === product.id 
+          ? { ...item, quantity: newQuantity } 
+          : item
+      )
+    );
+  };
 return(
     <>
      <NavBar dark={dark} toggleDarkmode={toggleDarkmode}/>
      <Outlet context={{
         products, wishlist, toggleWishlist, 
         cartItems, toggleCart,
-        toggleDarkmode, dark 
+        toggleDarkmode, dark, updateCartQuantity
         }}/>
     </>
 )

@@ -2,6 +2,9 @@ import { useOutletContext } from "react-router";
 import ProductCard from "../Components/ProductCard";
 function Cart(){
     const { cartItems, dark } = useOutletContext();
+    // const totalPrice = cartItems.reduce((sum, item) => {
+    //     return sum + Math.floor(item.price * 130) * (item.quantity || 1);
+    // }, 0);
     
 return(
     <>
@@ -16,7 +19,7 @@ return(
 
     </div>
     <div>
-        
+        {/* {totalPrice} */}
     </div>
     </>
 )
