@@ -33,7 +33,7 @@ function ProductCard({ product }) {
         -
       </button>
       <span className="bg-gray-100 px-4 py-1">
-        {quantity}
+        {quantity > 0 ? quantity: setQuantity(1)}
       </span>
       <button 
         onClick={() => setQuantity(quantity + 1)}
