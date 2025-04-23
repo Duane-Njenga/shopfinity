@@ -8,6 +8,7 @@ const [products, setProducts]= useState([]);
 const [wishlist, setWishlist] = useState([]);
 const [cartItems, setCartItems] = useState([]);
 const [dark, setDark] = useState(false);
+const [isLoggedIn, setIsLoggedIn] = useState(false)
 
 
 useEffect(() => {
@@ -62,11 +63,17 @@ const updateCartQuantity = (product, newQuantity) => {
   };
 return(
     <>
-     <NavBar dark={dark} toggleDarkmode={toggleDarkmode}/>
+     <NavBar 
+     dark={dark} 
+     toggleDarkmode={toggleDarkmode}
+     isLoggedIn={isLoggedIn}
+     setIsLoggedIn={setIsLoggedIn}/>
      <Outlet context={{
         products, wishlist, toggleWishlist, 
         cartItems, toggleCart,
-        toggleDarkmode, dark, updateCartQuantity
+        toggleDarkmode, dark,
+         updateCartQuantity,
+         isLoggedIn, setIsLoggedIn
         }}/>
     </>
 )

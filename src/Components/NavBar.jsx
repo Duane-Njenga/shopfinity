@@ -1,9 +1,9 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import DarkModeToggle from "./DarkModeToggle";
 
-function NavBar({dark, toggleDarkmode}){
-    let isLoggedIn = false  
-    
+function NavBar({dark, toggleDarkmode, isLoggedIn, setIsLoggedIn}){
+    const navigate = useNavigate();
+
 return(
     <div className={`h-auto text-xl  ${dark ? "bg-amber-700":"bg-amber-300"}`}>
      <NavLink to = "/"className="hover:text-amber-400 m-4 hover:bg-blue-950 rounded-md">Home</NavLink>
@@ -12,7 +12,15 @@ return(
      <DarkModeToggle dark = {dark} toggleDarkmode={toggleDarkmode}/>
      
     <span className="cursor-pointer bg-gray-100 py-2 rounded-xl float-right w-20 mr-2 text-center">
-        {isLoggedIn ? <button >Log Out</button>
+        {isLoggedIn 
+        ? 
+        <button 
+        onClick={() => {navigate('/login');
+            setIsLoggedIn(true);
+        console.log(isLoggedIn);
+        }
+        }
+        >Log Out</button>
     :
     <NavLink to = "/login">Log In</NavLink>
     }  

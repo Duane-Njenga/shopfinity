@@ -5,6 +5,7 @@ import ProductPage from "./src/Pages/ProductPage";
 import WishlistPage from "./src/Pages/WishlistPage";
 import Cart from "./src/Pages/Cart";
 import ErrorPage from "./src/Pages/ErrorPage";
+import Register from "./src/Pages/Register";
 
 const routes = [
     {
@@ -19,6 +20,10 @@ const routes = [
             {
                 path:"/products/:id",
                 element:<ProductPage />
+            },
+            {
+                path:"/register",
+                element:<Register/>
             },
             {
                 path:"/login",
