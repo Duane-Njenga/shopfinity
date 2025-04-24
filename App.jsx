@@ -73,7 +73,7 @@ return(
      setIsLoggedIn={setIsLoggedIn}/>
      <Outlet context={{
         products, wishlist, toggleWishlist, 
-        cartItems, toggleCart,
+        cartItems, toggleCart,setCartItems,
         toggleDarkmode, dark,
          updateCartQuantity,
          isLoggedIn, setIsLoggedIn

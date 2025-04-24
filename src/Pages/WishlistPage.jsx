@@ -12,7 +12,7 @@ function WishlistPage(){
     return(
         <>
             <h1
-            className={`text-2xl underline text-center font-bold${dark ? "text-darkText": "text-black"}`}
+            className={`text-2xl underline text-center font-bold ${dark ? "text-darkText": "text-black"}`}
             >Your Wishlist</h1>
             <div className="flex flex-wrap gap-4">
             {wishlist.map((item) => (

@@ -5,7 +5,7 @@ function DarkModeToggle({toggleDarkmode,dark}) {
       onClick={toggleDarkmode} 
       className={`px-4 py-2 rounded-md cursor-pointer ${dark ?"bg-gray-500" :"bg-gray-200"}`}
     > 
-      {dark ? 'On🌙' : 'Off☀️'}
+      {dark ? 'On🌙' : 'Off☀️' }
     </button>
   );
 }
