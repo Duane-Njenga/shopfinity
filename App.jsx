@@ -12,7 +12,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false)
 
 
 useEffect(() => {
-    fetch("http://localhost:3000/products")
+    fetch("https://fakestoreapi.com/products")
     .then(res => res.json())
     .then(data => setProducts(data))
 },[]);
@@ -44,11 +44,14 @@ const toggleCart =(product) => {
 }
 function toggleDarkmode(){
     setDark(!dark)
-    const root= document.getElementById("root")
+    const body = document.getElementById("body")
     if(dark === true){
-        root.classList.remove("bg-darkBg")
+        body.classList.remove("bg-darkBg")
+
     }else{
-        root.classList.add("bg-darkBg")
+        body.classList.add("bg-darkBg")
+
+
     }
         
 }
