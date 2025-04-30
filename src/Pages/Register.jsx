@@ -3,7 +3,8 @@ import { Link, useNavigate, useOutletContext } from 'react-router';
 import { auth, db } from '../Components/Firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc} from "firebase/firestore";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -13,40 +14,75 @@ function Register() {
   const navigate = useNavigate();
   const {dark, setIsLoggedIn} = useOutletContext();
 
- const handleRegister = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
    
-    try{
-    await createUserWithEmailAndPassword(auth, email, password);
-        const user = auth.currentUser;
-        console.log(user);
-        console.log(user.email, fName, lName);
+    try {
+      const loadingToast = toast.loading("Creating your account...", {
+        position: "top-center",
+        theme: dark ? "dark" : "light",
+      });
+      
+      await createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      console.log(user);
+      console.log(user.email, fName, lName);
+      
+      if(user) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          firstName: fName,
+          lastName: lName
+        });
         
+        toast.update(loadingToast, {
+          render: "Registration successful! Redirecting...",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
         
-        if(user){
-            await setDoc(doc(db, "users", user.uid), {
-                email:user.email,
-                firstName:fName,
-                lastName:lName
-            })
-        }
-        navigate("/");
-        setIsLoggedIn(true);
-
-    }catch(error){
-        console.log(error.message)
+        setTimeout(() => {
+          navigate("/");
+          setIsLoggedIn(true);
+        }, 2000);
+      }
+    } catch(error) {
+      console.log(error);
+      
+      let errorMessage = "Registration failed. Please try again.";
+      
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = "Email already in use. Please use a different email.";
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = "Password is too weak. Please use a stronger password.";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = "Invalid email address. Please enter a valid email.";
+      }
+      
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: dark ? "dark" : "light",
+      });
     }
-    
- }
+  }
 
   return (
-    <div className= {`max-w-md mx-auto p-6 rounded-lg shadow-lg border border-gray-200 hover:scale-102 ${dark ? " border-gray-400 hover:shadow-2xl hover:shadow-gray-400":"border-black hover:shadow-2xl hover:shadow-gray-800"}`}>
-      <h2 className= {`text-2xl font-bold mb-6 text-center ${dark ? "text-darkText" : "text-gray-800"}`}>
+    <div className={`max-w-md mx-auto p-6 rounded-lg shadow-lg border border-gray-200 hover:scale-102 ${dark ? " border-gray-400 hover:shadow-2xl hover:shadow-gray-400":"border-black hover:shadow-2xl hover:shadow-gray-800"}`}>
+      <ToastContainer />
+      <h2 className={`text-2xl font-bold mb-6 text-center ${dark ? "text-darkText" : "text-gray-800"}`}>
         Register
-        </h2>
-      <form className="space-y-6" onSubmit={handleRegister} >
-      <div className="space-y-2">
-          <label className={`block text-sm font-medium  ${dark ? "text-darkText" : "text-gray-700"}`}>
+      </h2>
+      <form className="space-y-6" onSubmit={handleRegister}>
+        <div className="space-y-2">
+          <label className={`block text-sm font-medium ${dark ? "text-darkText" : "text-gray-700"}`}>
             First Name</label>
           <input 
             type="text"
@@ -58,7 +94,7 @@ function Register() {
           />
         </div>
         <div className="space-y-2">
-          <label className={`block text-sm font-medium  ${dark ? "text-darkText" : "text-gray-700"}`}>
+          <label className={`block text-sm font-medium ${dark ? "text-darkText" : "text-gray-700"}`}>
             Last Name</label>
           <input 
             type="text" 
@@ -70,7 +106,7 @@ function Register() {
           />
         </div>
         <div className="space-y-2">
-          <label className={`block text-sm font-medium  ${dark ? "text-darkText" : "text-gray-700"}`}>Email Address</label>
+          <label className={`block text-sm font-medium ${dark ? "text-darkText" : "text-gray-700"}`}>Email Address</label>
           <input 
             type="email" 
             className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${dark ? "text-white" : "text-black"} `}
@@ -81,7 +117,7 @@ function Register() {
           />
         </div>
         <div className="space-y-2">
-          <label className={`block text-sm font-medium  ${dark ? "text-darkText" : "text-gray-700"}`}>Password</label>
+          <label className={`block text-sm font-medium ${dark ? "text-darkText" : "text-gray-700"}`}>Password</label>
           <input 
             type="password" 
             className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${dark ? "text-white" : "text-black"} `}
@@ -105,7 +141,7 @@ function Register() {
         </div>
       </form>
     </div>
-    );
+  );
 }
 
 export default Register;

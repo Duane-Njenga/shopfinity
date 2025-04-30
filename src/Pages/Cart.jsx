@@ -11,7 +11,6 @@ function Cart(){
     const navigate = useNavigate();
     
     const checkOut = () => {
-        // Show success toast
         toast.success('Order placed successfully! Redirecting...', {
             position: "top-center",
             autoClose: 2500,
@@ -23,7 +22,6 @@ function Cart(){
             theme: dark ? "dark" : "light",
         });
         
-        // Continue with checkout process after toast is shown
         setTimeout(() => {
             navigate("/");
             setCartItems([]);
