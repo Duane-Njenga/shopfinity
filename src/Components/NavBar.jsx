@@ -3,7 +3,10 @@ import DarkModeToggle from "./DarkModeToggle";
 
 function NavBar({dark, toggleDarkmode, isLoggedIn, setIsLoggedIn}){
     const navigate = useNavigate();
-
+    const logOut = () => {
+        navigate('/login');
+        setIsLoggedIn(false)
+    }
 return(
     <div className={`h-auto text-xl  ${dark ? "bg-amber-700":"bg-amber-300"}`}>
         <NavLink to = "/"className="hover:text-amber-400 m-4 hover:bg-blue-950 rounded-md">Home</NavLink>
@@ -21,7 +24,7 @@ return(
         {isLoggedIn 
         ? 
         <button 
-        onClick={() => navigate('/login')}
+        onClick={logOut}
         >Log Out</button>
     :
     <NavLink to = "/login">Log In</NavLink>

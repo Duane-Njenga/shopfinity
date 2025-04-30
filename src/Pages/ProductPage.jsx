@@ -4,10 +4,12 @@ import { useOutletContext, useParams } from "react-router";
 function ProductPage(){
  const params = useParams();
  const id = params.id - 1;
- const {products, wishlist, toggleWishlist, cartItems, toggleCart, dark} = useOutletContext();
+ const {products, wishlist, toggleWishlist, cartItems, toggleCart, dark, isLoggedIn} = useOutletContext();
  const [product, setProduct] = useState(null)
-  const [isInCart, setIsInCart] = useState(false);
-  const [isInWishlist, setIsInWishlist] = useState(false);
+ const isInCart = cartItems.some((item) => item.id == params.id)
+ const isInWishlist = wishlist.some((item) => item.id == params.id)
+
+ 
  useEffect(()=> {
     setProduct(products[id])
  }, [id, products])
@@ -33,20 +35,26 @@ function ProductPage(){
                 <p className="mb-4">Price: Ksh.{Math.floor(price * 130).toLocaleString()}</p>
                 
                 <button 
-                  onClick={() => {toggleCart(product);
-                    setIsInCart(!isInCart);
-                    
-                  }}
-                  className="bg-blue-600 text-white px-7 py-1.5 rounded-md text-sm hover:bg-blue-700 transition">
+                  onClick={() => {toggleCart(product)}}
+                  disabled = {!isLoggedIn}
+
+                  className = {`bg-blue-600 text-white px-7 py-1.5 rounded-md text-sm hover:bg-blue-700 transition ${isLoggedIn ? "": " hidden"}`} >
                   {isInCart ? "Remove from cart":"Add to Cart"}
                 </button>
-                  
+                {isLoggedIn ? null: 
+                <span
+                className="bg-gray-500 text-2xl rounded-md"
+                >Log In for More Features
+                </span>
+                }
                 {!isInCart && (
                   <button
                     onClick={() => {toggleWishlist(product);
-                      setIsInWishlist(!isInWishlist)
+                      
                     }}
-                    className={`rounded-md text-amber-50 px-3 py-1 ${isInWishlist ? "bg-red-600 hover:bg-red-700" : "bg-amber-500 hover:bg-amber-600"}`}
+                    disabled = {!isLoggedIn}
+
+                    className={`rounded-md text-amber-50 px-3 py-1 ${isInWishlist ? "bg-red-600 hover:bg-red-700" : "bg-amber-500 hover:bg-amber-600"}${isLoggedIn ? "": " hidden"}`}
                   >
                     {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
                   </button>

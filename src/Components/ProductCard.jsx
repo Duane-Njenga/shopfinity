@@ -3,7 +3,9 @@ import { Link, useOutletContext } from "react-router";
 
 function ProductCard({ product }) {
   const { id, category, image, price, title } = product;
-  const {wishlist, toggleWishlist, dark, toggleCart, cartItems, updateCartQuantity} = useOutletContext();
+  const {wishlist, toggleWishlist, 
+    dark, isLoggedIn, 
+    toggleCart, cartItems, updateCartQuantity} = useOutletContext();
   const isInWishlist = wishlist.some((item) => item.id === id)
   const isInCart = cartItems.some((item) => item.id === id)
     
@@ -56,23 +58,28 @@ function ProductCard({ product }) {
         <button 
           onClick={() => {toggleCart(product);
           }}
-          className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700 transition">
+          disabled = {!isLoggedIn}
+          className={`bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700 transition ${isLoggedIn ? "": " hidden"}`}>
             {isInCart ? "Remove from cart":"Add to Cart"}
           </button>
           
-      
+      {isLoggedIn ? null: 
+      <span
+      className="bg-gray-500"
+      >Log In for More Features</span>}
           {!isInCart && (
           <button
           onClick ={() => {toggleWishlist(product);}}
-          className = {`rounded-md text-amber-50 px-3 py-1 ${isInWishlist ? "bg-red-600 hover:bg-red-700" : "bg-amber-500 hover:bg-amber-600"}`}
+          className = {`rounded-md text-amber-50 px-3 py-1  ${isInWishlist ? "bg-red-600 hover:bg-red-700" : "bg-amber-500 hover:bg-amber-600"} ${isLoggedIn ? "": " hidden"}`}
+          disabled = {!isLoggedIn}
           >
-            {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+            {isInWishlist  ? "Remove from Wishlist" : "Add to Wishlist"}
           </button>)
           }
         
 
         
-        {}
+        
 
         
       </div>
